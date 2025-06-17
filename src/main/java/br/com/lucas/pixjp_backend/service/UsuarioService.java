@@ -1,5 +1,7 @@
 package br.com.lucas.pixjp_backend.service;
 
+import br.com.lucas.pixjp_backend.dtos.CriarUsuarioRequest;
+import br.com.lucas.pixjp_backend.dtos.UsuarioCriadoResponse;
 import br.com.lucas.pixjp_backend.model.Usuario;
 import org.springframework.stereotype.Service;
 
@@ -10,5 +12,5 @@ public interface UsuarioService {
 
     List<Usuario> listarUsuarios();
 
-    Usuario salvarUsuario(Usuario usuario);
+    UsuarioCriadoResponse criarUsuario(CriarUsuarioRequest criarUsuarioRequest);
 }

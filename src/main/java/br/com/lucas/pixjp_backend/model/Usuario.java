@@ -24,7 +24,7 @@ public class Usuario implements Serializable  {
 
     @Column(name = "nome", length = 150, nullable = false)
     private String nome;
-    @Column(name = "cpf", length = 11, nullable = false)
+    @Column(name = "cpf", length = 11)
     private String cpf;
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;

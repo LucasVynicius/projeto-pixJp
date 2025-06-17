@@ -1,27 +1,31 @@
 package br.com.lucas.pixjp_backend.controller;
 
+import br.com.lucas.pixjp_backend.dtos.CriarUsuarioRequest;
+import br.com.lucas.pixjp_backend.dtos.UsuarioCriadoResponse;
 import br.com.lucas.pixjp_backend.model.Usuario;
-import br.com.lucas.pixjp_backend.service.UsuarioServiceImpl;
+import br.com.lucas.pixjp_backend.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/usuario")
+
+@RestController
+@RequestMapping("/usuario")
 @RequiredArgsConstructor
 public class UsuarioController {
 
-    private final UsuarioServiceImpl usuarioService;
+    private final UsuarioService usuarioService;
 
-    @GetMapping()
+    @GetMapping("/usuarios")
     public List<Usuario> listarUsuarios(){
         return usuarioService.listarUsuarios();
     }
 
-    @PutMapping
-    public void criarUsuario(Usuario usuario){
-        usuarioService.salvarUsuario(usuario);
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UsuarioCriadoResponse criarUsuario(CriarUsuarioRequest criarUsuarioRequest){
+        return usuarioService.criarUsuario(criarUsuarioRequest);
     }
 }
