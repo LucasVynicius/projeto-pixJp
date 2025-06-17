@@ -24,16 +24,22 @@ public class Usuario implements Serializable  {
 
     @Column(name = "nome", length = 150, nullable = false)
     private String nome;
-    @Column(name = "cpf", length = 11)
+
+    @Column(name = "cpf", length = 11, nullable = false)
     private String cpf;
+
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
+
     @Column(name = "telefone")
     private String telefone;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "endereco")
     private String endereco;
+
     @OneToMany
     private List<Bilhete> bilhetes;
 }
