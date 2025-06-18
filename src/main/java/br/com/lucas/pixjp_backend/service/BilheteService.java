@@ -4,20 +4,18 @@ import br.com.lucas.pixjp_backend.dtos.BilheteCriadoResponse;
 import br.com.lucas.pixjp_backend.dtos.CriarBilheteRequest;
 import br.com.lucas.pixjp_backend.dtos.CriarUsuarioRequest;
 import br.com.lucas.pixjp_backend.model.Bilhete;
+import br.com.lucas.pixjp_backend.model.Sorteio;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public interface BilheteService {
 
-    BilheteCriadoResponse criarBilhete(CriarBilheteRequest criarBilheteRequest);
+    BilheteCriadoResponse comprarBilhete(CriarBilheteRequest criarBilheteRequest);
 
-    Bilhete buscarBilhetePeloId(Long id);
+    void processarSorteio(Sorteio sorteio);
 
-    List<Bilhete> buscarBilhetes ();
 
-    Bilhete atualizarBilhete(Long id, CriarBilheteRequest criarBilheteRequest);
-
-    void deletarBilhetePeloId(Long id);
 }

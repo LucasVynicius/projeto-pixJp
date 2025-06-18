@@ -2,11 +2,9 @@ package br.com.lucas.pixjp_backend.dtos;
 
 import java.time.LocalDate;
 
-public record CriarBilheteRequest(
+public record CriaSorteioRequest(
         String numero,
         Boolean premiado,
-        LocalDate dataCompra,
-        Long usuarioId,
-        Long sorteioId
+        LocalDate dataCompra
 ) {
 }
