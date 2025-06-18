@@ -10,7 +10,14 @@ import java.util.List;
 @Service
 public interface UsuarioService {
 
+    UsuarioCriadoResponse criarUsuario(CriarUsuarioRequest criarUsuarioRequest);
+
+    Usuario buscarUsuarioPeloId(Long id);
+
     List<Usuario> listarUsuarios();
 
-    UsuarioCriadoResponse criarUsuario(CriarUsuarioRequest criarUsuarioRequest);
+    Usuario atualizarUsuario(Long id, CriarUsuarioRequest criarUsuarioRequest);
+
+    void deletarUsuario(Long id);
+
 }
