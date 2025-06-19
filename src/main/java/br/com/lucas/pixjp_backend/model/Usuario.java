@@ -1,5 +1,6 @@
 package br.com.lucas.pixjp_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,6 +37,7 @@ public class Usuario implements Serializable  {
     @Column(name = "endereco")
     private String endereco;
 
-    @OneToMany
+    @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
     private List<Bilhete> bilhetes;
 }

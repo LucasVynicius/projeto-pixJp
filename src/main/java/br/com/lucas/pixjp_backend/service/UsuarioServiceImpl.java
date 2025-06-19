@@ -1,8 +1,11 @@
 package br.com.lucas.pixjp_backend.service;
 
+import br.com.lucas.pixjp_backend.dtos.BilheteUsuarioResponse;
 import br.com.lucas.pixjp_backend.dtos.CriarUsuarioRequest;
 import br.com.lucas.pixjp_backend.dtos.UsuarioCriadoResponse;
+import br.com.lucas.pixjp_backend.model.Bilhete;
 import br.com.lucas.pixjp_backend.model.Usuario;
+import br.com.lucas.pixjp_backend.repositories.BilheteRepository;
 import br.com.lucas.pixjp_backend.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,8 @@ import java.util.List;
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+
+    private final BilheteRepository bilheteRepository;
 
     @Override
     public UsuarioCriadoResponse criarUsuario(CriarUsuarioRequest criarUsuarioRequest) {
@@ -42,6 +47,23 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public List<Usuario> listarUsuarios() {
         return usuarioRepository.findAll();
+    }
+
+    @Override
+    public List<BilheteUsuarioResponse> listarBilhetesDoUsuario(Long usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+
+        List<Bilhete> bilhetes = bilheteRepository.findByUsuario(usuario);
+
+        return bilhetes.stream()
+                .map(b -> new BilheteUsuarioResponse(
+                        b.getId(),
+                        b.getNumero(),
+                        b.getDataCompra(),
+                        b.getPremiado(),
+                        b.getSorteio().getId()
+                ))
+                .toList();
     }
 
     @Override

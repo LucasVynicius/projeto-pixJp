@@ -1,6 +1,7 @@
 package br.com.lucas.pixjp_backend.controller;
 
 import br.com.lucas.pixjp_backend.dtos.BilheteCriadoResponse;
+import br.com.lucas.pixjp_backend.dtos.BilheteUsuarioResponse;
 import br.com.lucas.pixjp_backend.dtos.CriarBilheteRequest;
 import br.com.lucas.pixjp_backend.service.BilheteService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/bilhete")
@@ -21,4 +23,6 @@ public class BilheteController {
     public BilheteCriadoResponse salvarBilhete(@RequestBody CriarBilheteRequest criarBilheteRequest){
         return bilheteService.comprarBilhete(criarBilheteRequest);
     }
+
+
 }
