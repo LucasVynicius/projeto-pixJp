@@ -16,7 +16,7 @@ public class Sorteio implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "numero_sorteio", nullable = false)
+    @Column(name = "numero_sorteio")
     private String numero;
     @Column(name = "data_sorteio", nullable = false)
     private LocalDate dataSorteio;
@@ -24,4 +24,6 @@ public class Sorteio implements Serializable {
     private LocalDate dataInicio;
     @Column(name = "data_final", nullable = false)
     private LocalDate dataFinal;
+
+
 }

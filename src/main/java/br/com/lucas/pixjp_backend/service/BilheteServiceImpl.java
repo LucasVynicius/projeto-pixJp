@@ -1,7 +1,6 @@
 package br.com.lucas.pixjp_backend.service;
 
-import br.com.lucas.pixjp_backend.dtos.BilheteCriadoResponse;
-import br.com.lucas.pixjp_backend.dtos.CriarBilheteRequest;
+import br.com.lucas.pixjp_backend.dtos.*;
 import br.com.lucas.pixjp_backend.model.Bilhete;
 import br.com.lucas.pixjp_backend.model.Sorteio;
 import br.com.lucas.pixjp_backend.model.Usuario;
@@ -12,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -48,6 +49,7 @@ public class BilheteServiceImpl implements BilheteService {
         bilhete.setPremiado(false);
         bilhete.setDataCompra(dataHoje);
         bilhete.setUsuario(usuario);
+        bilhete.setSorteio(sorteio);
 
         bilheteRepository.save(bilhete);
 
@@ -55,7 +57,36 @@ public class BilheteServiceImpl implements BilheteService {
     }
 
     @Override
-    public void processarSorteio(Sorteio sorteio) {
+    public SorteioProcessadoResponse processarSorteio(Sorteio sorteio) {
+        List<Bilhete> bilhetesDoSorteio = bilheteRepository.findBySorteio(sorteio);
 
+        if (bilhetesDoSorteio.isEmpty()){
+            throw new RuntimeException("Nenhum bilhete encontrado para este sorteio.");
+        }
+
+        Bilhete bilhetePremiado = bilhetesDoSorteio.get(new Random().nextInt(bilhetesDoSorteio.size()));
+        bilhetePremiado.setPremiado(true);
+
+        sorteio.setNumero(bilhetePremiado.getNumero());
+
+        bilheteRepository.save(bilhetePremiado);
+        sorteioRepository.save(sorteio);
+
+        Usuario usuario = bilhetePremiado.getUsuario();
+
+        return new SorteioProcessadoResponse(
+                "Sorteio processado com sucesso!",
+                bilhetePremiado.getNumero(),
+                new BilhetePremiadoResponse(
+                        bilhetePremiado.getId(),
+                        bilhetePremiado.getNumero(),
+                        bilhetePremiado.getDataCompra(),
+                        new UsuarioResumidoResponse(
+                                usuario.getId(),
+                                usuario.getNome(),
+                                usuario.getEmail()
+                        )
+                )
+        );
     }
 }

@@ -24,4 +24,8 @@ public class Bilhete {
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "sorteio_id", nullable = false)
+    private Sorteio sorteio;
 }
