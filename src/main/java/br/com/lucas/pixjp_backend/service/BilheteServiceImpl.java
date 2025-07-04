@@ -29,8 +29,8 @@ public class BilheteServiceImpl implements BilheteService {
     @Override
     public BilheteCriadoResponse comprarBilhete(CriarBilheteRequest criarBilheteRequest) {
 
-        Long usuarioId = criarBilheteRequest.usuarioId();
-        Long sorteioId = criarBilheteRequest.sorteioId();
+        Long usuarioId = criarBilheteRequest.idUsuario();
+        Long sorteioId = criarBilheteRequest.idSorteio();
 
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
@@ -57,37 +57,8 @@ public class BilheteServiceImpl implements BilheteService {
     }
 
     @Override
-    public SorteioProcessadoResponse processarSorteio(Sorteio sorteio) {
-        List<Bilhete> bilhetesDoSorteio = bilheteRepository.findBySorteio(sorteio);
-
-        if (bilhetesDoSorteio.isEmpty()){
-            throw new RuntimeException("Nenhum bilhete encontrado para este sorteio.");
-        }
-
-        Bilhete bilhetePremiado = bilhetesDoSorteio.get(new Random().nextInt(bilhetesDoSorteio.size()));
-        bilhetePremiado.setPremiado(true);
-
-        sorteio.setNumero(bilhetePremiado.getNumero());
-
-        bilheteRepository.save(bilhetePremiado);
-        sorteioRepository.save(sorteio);
-
-        Usuario usuario = bilhetePremiado.getUsuario();
-
-        return new SorteioProcessadoResponse(
-                "Sorteio processado com sucesso!",
-                bilhetePremiado.getNumero(),
-                new BilhetePremiadoResponse(
-                        bilhetePremiado.getId(),
-                        bilhetePremiado.getNumero(),
-                        bilhetePremiado.getDataCompra(),
-                        new UsuarioResumidoResponse(
-                                usuario.getId(),
-                                usuario.getNome(),
-                                usuario.getEmail()
-                        )
-                )
-        );
+    public List<BilheteCriadoResponse> listarBilhetePremiadoDoUsuario(Long idUsuario) {
+        return bilheteRepository.findByUsuarioIdAndPremiado(idUsuario);
     }
 
 

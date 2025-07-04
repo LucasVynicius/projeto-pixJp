@@ -34,8 +34,9 @@ public class Usuario implements Serializable  {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "endereco")
-    private String endereco;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
+    private Endereco endereco;
 
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore

@@ -1,10 +1,8 @@
 package br.com.lucas.pixjp_backend.controller;
 
-import br.com.lucas.pixjp_backend.dtos.BilheteUsuarioResponse;
 import br.com.lucas.pixjp_backend.dtos.CriarUsuarioRequest;
 import br.com.lucas.pixjp_backend.dtos.UsuarioCriadoResponse;
 import br.com.lucas.pixjp_backend.model.Usuario;
-import br.com.lucas.pixjp_backend.service.BilheteService;
 import br.com.lucas.pixjp_backend.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,5 @@
 package br.com.lucas.pixjp_backend.service;
 
-import br.com.lucas.pixjp_backend.dtos.BilheteUsuarioResponse;
 import br.com.lucas.pixjp_backend.dtos.CriarUsuarioRequest;
 import br.com.lucas.pixjp_backend.dtos.UsuarioCriadoResponse;
 import br.com.lucas.pixjp_backend.model.Usuario;
@@ -17,7 +16,6 @@ public interface UsuarioService {
 
     List<Usuario> listarUsuarios();
 
-    List<BilheteUsuarioResponse> listarBilhetesDoUsuario(Long id);
 
     Usuario atualizarUsuario(Long id, CriarUsuarioRequest criarUsuarioRequest);
 

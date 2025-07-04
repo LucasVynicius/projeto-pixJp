@@ -6,7 +6,7 @@ public record CriarBilheteRequest(
         String numero,
         Boolean premiado,
         LocalDate dataCompra,
-        Long usuarioId,
-        Long sorteioId
+        Long idUsuario,
+        Long idSorteio
 ) {
 }

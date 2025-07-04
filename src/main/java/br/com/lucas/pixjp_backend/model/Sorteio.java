@@ -1,10 +1,12 @@
 package br.com.lucas.pixjp_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -25,5 +27,8 @@ public class Sorteio implements Serializable {
     @Column(name = "data_final", nullable = false)
     private LocalDate dataFinal;
 
+    @OneToMany(mappedBy = "sorteio")
+    @JsonIgnore
+    private List<Bilhete> bilhetes;
 
 }

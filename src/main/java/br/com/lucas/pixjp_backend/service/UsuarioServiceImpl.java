@@ -1,6 +1,5 @@
 package br.com.lucas.pixjp_backend.service;
 
-import br.com.lucas.pixjp_backend.dtos.BilheteUsuarioResponse;
 import br.com.lucas.pixjp_backend.dtos.CriarUsuarioRequest;
 import br.com.lucas.pixjp_backend.dtos.UsuarioCriadoResponse;
 import br.com.lucas.pixjp_backend.model.Bilhete;
@@ -10,7 +9,6 @@ import br.com.lucas.pixjp_backend.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
