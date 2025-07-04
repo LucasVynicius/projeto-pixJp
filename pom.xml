@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.lucas</groupId>
-	<artifactId>pixjp_backend</artifactId>
+	<artifactId>pixjpbackend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>pixjp-backend</name>
 	<description>API do PixJP do jogo premiado</description>
