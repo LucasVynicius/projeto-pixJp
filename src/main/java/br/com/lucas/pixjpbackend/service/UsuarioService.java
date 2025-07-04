@@ -12,12 +12,12 @@ public interface UsuarioService {
 
     UsuarioCriadoResponse criarUsuario(CriarUsuarioRequest criarUsuarioRequest);
 
-    Usuario buscarUsuarioPeloId(Long id);
+    UsuarioCriadoResponse buscarUsuarioPeloId(Long id);
 
-    List<Usuario> listarUsuarios();
+    List<UsuarioCriadoResponse> listarUsuarios();
 
 
-    Usuario atualizarUsuario(Long id, CriarUsuarioRequest criarUsuarioRequest);
+    UsuarioCriadoResponse atualizarUsuario(Long id, CriarUsuarioRequest criarUsuarioRequest);
 
     void deletarUsuario(Long id);
 

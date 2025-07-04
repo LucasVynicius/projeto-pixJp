@@ -2,11 +2,13 @@ package br.com.lucas.pixjpbackend.service;
 
 import br.com.lucas.pixjpbackend.dtos.CriarUsuarioRequest;
 import br.com.lucas.pixjpbackend.dtos.UsuarioCriadoResponse;
+import br.com.lucas.pixjpbackend.mapper.EnderecoMapper;
 import br.com.lucas.pixjpbackend.mapper.UsuarioMapper;
 import br.com.lucas.pixjpbackend.model.Endereco;
 import br.com.lucas.pixjpbackend.model.Usuario;
 import br.com.lucas.pixjpbackend.repositories.BilheteRepository;
 import br.com.lucas.pixjpbackend.repositories.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioMapper usuarioMapper;
 
+    private final EnderecoMapper enderecoMapper;
+
     private final BilheteRepository bilheteRepository;
 
     @Override
@@ -33,43 +37,37 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Usuario buscarUsuarioPeloId(Long id) {
-        return usuarioRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT, "Usuario não encontrado"));
-    }
+    public UsuarioCriadoResponse buscarUsuarioPeloId(Long id) {
 
-    @Override
-    public List<Usuario> listarUsuarios() {
-        return usuarioRepository.findAll();
-    }
-
-    @Override
-    public Usuario atualizarUsuario(Long id, CriarUsuarioRequest criarUsuarioRequest) {
-        Usuario usuarioExistente = usuarioRepository.findById(id)
+        Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT, "Usuario não encontrado"));
 
-        Endereco endereco = usuarioExistente.getEndereco();
+        return usuarioMapper.toDTO(usuario);
+    }
 
-        if(endereco == null){
-            endereco =new Endereco();
-        }
+    @Override
+    public List<UsuarioCriadoResponse> listarUsuarios() {
+        return usuarioRepository.findAll()
+                .stream()
+                .map(usuarioMapper::toDTO)
+                .toList();
+    }
 
-        endereco.setLogradouro(criarUsuarioRequest.endereco().logradouro());
-        endereco.setNumero(criarUsuarioRequest.endereco().numero());
-        endereco.setComplemento(criarUsuarioRequest.endereco().complemento());
-        endereco.setBairro(criarUsuarioRequest.endereco().bairro());
-        endereco.setCidade(criarUsuarioRequest.endereco().cidade());
-        endereco.setEstado(criarUsuarioRequest.endereco().estado());
-        endereco.setPais(criarUsuarioRequest.endereco().pais());
-        endereco.setCep(criarUsuarioRequest.endereco().cep());
+    @Transactional
+    @Override
+    public UsuarioCriadoResponse atualizarUsuario(Long id, CriarUsuarioRequest dto) {
+        Usuario usuario= usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT, "Usuario não encontrado"));
 
-        usuarioExistente.setNome(criarUsuarioRequest.nome());
-        usuarioExistente.setCpf(criarUsuarioRequest.cpf());
-        usuarioExistente.setDataNascimento(criarUsuarioRequest.dataNascimento());
-        usuarioExistente.setTelefone(criarUsuarioRequest.telefone());
-        usuarioExistente.setEmail(criarUsuarioRequest.email());
-        usuarioExistente.setEndereco(endereco);
+        usuario.setNome(dto.nome());
+        usuario.setCpf(dto.cpf());
+        usuario.setDataNascimento(dto.dataNascimento());
+        usuario.setTelefone(dto.telefone());
+        usuario.setEmail(dto.email());
+        usuario.setEndereco(enderecoMapper.toEntity(dto.endereco()));
 
-        return usuarioRepository.save(usuarioExistente);
+        usuarioRepository.save(usuario);
+        return usuarioMapper.toDTO(usuario);
     }
 
 
