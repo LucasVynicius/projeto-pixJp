@@ -2,6 +2,7 @@ package br.com.lucas.pixjpbackend.service;
 
 import br.com.lucas.pixjpbackend.dtos.CriarUsuarioRequest;
 import br.com.lucas.pixjpbackend.dtos.UsuarioCriadoResponse;
+import br.com.lucas.pixjpbackend.mapper.UsuarioMapper;
 import br.com.lucas.pixjpbackend.model.Endereco;
 import br.com.lucas.pixjpbackend.model.Usuario;
 import br.com.lucas.pixjpbackend.repositories.BilheteRepository;
@@ -19,35 +20,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
+    private final UsuarioMapper usuarioMapper;
+
     private final BilheteRepository bilheteRepository;
 
     @Override
-    public UsuarioCriadoResponse criarUsuario(CriarUsuarioRequest criarUsuarioRequest) {
+    public UsuarioCriadoResponse criarUsuario(CriarUsuarioRequest dto) {
 
-        Endereco endereco = new Endereco(
-                null,
-                criarUsuarioRequest.endereco().logradouro(),
-                criarUsuarioRequest.endereco().numero(),
-                criarUsuarioRequest.endereco().complemento(),
-                criarUsuarioRequest.endereco().bairro(),
-                criarUsuarioRequest.endereco().cidade(),
-                criarUsuarioRequest.endereco().estado(),
-                criarUsuarioRequest.endereco().pais(),
-                criarUsuarioRequest.endereco().cep()
-        );
+       Usuario usuario =  usuarioMapper.toEntity(dto);
 
-        Usuario usuario = new Usuario();
-
-        usuario.setNome(criarUsuarioRequest.nome());
-        usuario.setCpf(criarUsuarioRequest.cpf());
-        usuario.setDataNascimento(criarUsuarioRequest.dataNascimento());
-        usuario.setTelefone(criarUsuarioRequest.telefone());
-        usuario.setEmail(criarUsuarioRequest.email());
-        usuario.setEndereco(endereco);
-
-        Usuario usuarioCriado = usuarioRepository.save(usuario);
-
-        return new UsuarioCriadoResponse("Usuario criado com sucesso!", usuarioCriado.getId());
+        return usuarioMapper.toDTO(usuarioRepository.save(usuario));
     }
 
     @Override
