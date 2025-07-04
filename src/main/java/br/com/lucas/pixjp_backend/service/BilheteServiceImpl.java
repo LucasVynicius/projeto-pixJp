@@ -42,10 +42,12 @@ public class BilheteServiceImpl implements BilheteService {
             throw new RuntimeException("Compra não permitida fora do período do sorteio.");
         }
 
-        String numeroGerado = UUID.randomUUID().toString().substring(0, 8);
+        int numeroAleatorio = new Random().nextInt(999999) + 1;
+
+        String numero = criarBilheteRequest.numero() != null ? criarBilheteRequest.numero() : String.format("%06d", numeroAleatorio);
 
         Bilhete bilhete = new Bilhete();
-        bilhete.setNumero(numeroGerado);
+        bilhete.setNumero(numero);
         bilhete.setPremiado(false);
         bilhete.setDataCompra(dataHoje);
         bilhete.setUsuario(usuario);

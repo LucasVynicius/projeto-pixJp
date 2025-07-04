@@ -4,8 +4,6 @@ import java.time.LocalDate;
 
 public record CriarBilheteRequest(
         String numero,
-        Boolean premiado,
-        LocalDate dataCompra,
         Long idUsuario,
         Long idSorteio
 ) {

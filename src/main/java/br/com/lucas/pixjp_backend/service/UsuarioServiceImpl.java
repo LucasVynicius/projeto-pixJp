@@ -3,6 +3,7 @@ package br.com.lucas.pixjp_backend.service;
 import br.com.lucas.pixjp_backend.dtos.CriarUsuarioRequest;
 import br.com.lucas.pixjp_backend.dtos.UsuarioCriadoResponse;
 import br.com.lucas.pixjp_backend.model.Bilhete;
+import br.com.lucas.pixjp_backend.model.Endereco;
 import br.com.lucas.pixjp_backend.model.Usuario;
 import br.com.lucas.pixjp_backend.repositories.BilheteRepository;
 import br.com.lucas.pixjp_backend.repositories.UsuarioRepository;
@@ -23,6 +24,19 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UsuarioCriadoResponse criarUsuario(CriarUsuarioRequest criarUsuarioRequest) {
+
+        Endereco endereco = new Endereco(
+                null,
+                criarUsuarioRequest.endereco().logradouro(),
+                criarUsuarioRequest.endereco().numero(),
+                criarUsuarioRequest.endereco().complemento(),
+                criarUsuarioRequest.endereco().bairro(),
+                criarUsuarioRequest.endereco().cidade(),
+                criarUsuarioRequest.endereco().estado(),
+                criarUsuarioRequest.endereco().pais(),
+                criarUsuarioRequest.endereco().cep()
+        );
+
         Usuario usuario = new Usuario();
 
         usuario.setNome(criarUsuarioRequest.nome());
@@ -30,7 +44,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setDataNascimento(criarUsuarioRequest.dataNascimento());
         usuario.setTelefone(criarUsuarioRequest.telefone());
         usuario.setEmail(criarUsuarioRequest.email());
-        usuario.setEndereco(criarUsuarioRequest.endereco());
+        usuario.setEndereco(endereco);
 
         Usuario usuarioCriado = usuarioRepository.save(usuario);
 
@@ -48,36 +62,35 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public List<BilheteUsuarioResponse> listarBilhetesDoUsuario(Long usuarioId) {
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
-
-        List<Bilhete> bilhetes = bilheteRepository.findByUsuario(usuario);
-
-        return bilhetes.stream()
-                .map(b -> new BilheteUsuarioResponse(
-                        b.getId(),
-                        b.getNumero(),
-                        b.getDataCompra(),
-                        b.getPremiado(),
-                        b.getSorteio().getId()
-                ))
-                .toList();
-    }
-
-    @Override
     public Usuario atualizarUsuario(Long id, CriarUsuarioRequest criarUsuarioRequest) {
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT, "Usuario não encontrado"));
+
+        Endereco endereco = usuarioExistente.getEndereco();
+
+        if(endereco == null){
+            endereco =new Endereco();
+        }
+
+        endereco.setLogradouro(criarUsuarioRequest.endereco().logradouro());
+        endereco.setNumero(criarUsuarioRequest.endereco().numero());
+        endereco.setComplemento(criarUsuarioRequest.endereco().complemento());
+        endereco.setBairro(criarUsuarioRequest.endereco().bairro());
+        endereco.setCidade(criarUsuarioRequest.endereco().cidade());
+        endereco.setEstado(criarUsuarioRequest.endereco().estado());
+        endereco.setPais(criarUsuarioRequest.endereco().pais());
+        endereco.setCep(criarUsuarioRequest.endereco().cep());
 
         usuarioExistente.setNome(criarUsuarioRequest.nome());
         usuarioExistente.setCpf(criarUsuarioRequest.cpf());
         usuarioExistente.setDataNascimento(criarUsuarioRequest.dataNascimento());
         usuarioExistente.setTelefone(criarUsuarioRequest.telefone());
         usuarioExistente.setEmail(criarUsuarioRequest.email());
-        usuarioExistente.setEndereco(criarUsuarioRequest.endereco());
+        usuarioExistente.setEndereco(endereco);
 
         return usuarioRepository.save(usuarioExistente);
     }
+
 
     @Override
     public void deletarUsuario(Long id) {

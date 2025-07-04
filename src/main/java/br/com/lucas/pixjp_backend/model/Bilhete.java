@@ -7,9 +7,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Table(name = "tb_bilhete")
 public class Bilhete {
 

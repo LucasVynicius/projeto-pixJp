@@ -36,11 +36,6 @@ public class UsuarioController {
         return usuarioService.listarUsuarios();
     }
 
-    @GetMapping("/{id}/bilhetes")
-    public List<BilheteUsuarioResponse> listarBilhetes(@PathVariable Long id){
-        return usuarioService.listarBilhetesDoUsuario(id);
-    }
-
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Usuario atualizarUsuario(@PathVariable Long id, @RequestBody CriarUsuarioRequest criarUsuarioRequest){
